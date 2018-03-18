@@ -110,7 +110,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:worldHeight/2 + 3, z:0)
+        geometryNode.position = SCNVector3(x:0, y:worldHeight/2 + 2.5, z:0)
         
         gameScene.rootNode.addChildNode(geometryNode)
         
@@ -128,7 +128,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:-worldHeight/2 + 3, z:0)
+        geometryNode.position = SCNVector3(x:0, y:-worldHeight/2 + 2.5, z:0)
         
         gameScene.rootNode.addChildNode(geometryNode)
         
@@ -146,7 +146,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:worldWidth/2, y:3, z:0)
+        geometryNode.position = SCNVector3(x:worldWidth/2, y:2.5, z:0)
         
         gameScene.rootNode.addChildNode(geometryNode)
         
@@ -164,7 +164,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:-worldWidth/2, y:3, z:0)
+        geometryNode.position = SCNVector3(x:-worldWidth/2, y:2.5, z:0)
         
         gameScene.rootNode.addChildNode(geometryNode)
         
@@ -182,7 +182,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
 //
 //        geometryNode.eulerAngles = transferToYZPlane
-        geometryNode.position = SCNVector3(x:0, y:3, z:worldDepth/2)
+        geometryNode.position = SCNVector3(x:0, y:2.5, z:worldDepth/2)
         
         gameScene.rootNode.addChildNode(geometryNode)
     }
@@ -201,7 +201,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         //
         //        geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:3, z:-worldDepth/2)
+        geometryNode.position = SCNVector3(x:0, y:2.5, z:-worldDepth/2)
         
         gameScene.rootNode.addChildNode(geometryNode)
         
@@ -224,7 +224,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let leftButton = UIButton(type: UIButtonType.custom)
         
         let x_ButtonPosition:Float = 20
-        let y_ButtonPosition:Float = -20
+        let y_ButtonPosition:Float = 0
         
         leftButton.setImage(UIImage(named: "button_test.png"), for: [])
         leftButton.translatesAutoresizingMaskIntoConstraints = false
@@ -253,7 +253,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let rightButton = UIButton(type: UIButtonType.custom)
         
         let x_ButtonPosition:Float = -20
-        let y_ButtonPosition:Float = -20
+        let y_ButtonPosition:Float = 0
         
         rightButton.setImage(UIImage(named: "button_test.png"), for: [])
         rightButton.translatesAutoresizingMaskIntoConstraints = false
@@ -295,7 +295,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 
         let randomPosition:Float = Float(arc4random_uniform(UInt32(right_depth - left_depth))) + left_depth;
         
-        geometryNode.position = SCNVector3(x:randomPosition, y:-11, z:0)
+        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
     
 //        let randomDirection:Float = arc4random_uniform(2) == 0 ? -1.0 : 1
 //        let force = SCNVector3(x:randomDirection, y:20, z:0)
