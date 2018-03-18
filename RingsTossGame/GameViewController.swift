@@ -15,14 +15,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     //    TO DO: We might not need this since it can be calculated based on world(...) constants.
     let bottom_height:Float = 0
     let top_height:Float = 19
-    let left_depth:Float = -9
-    let right_depth:Float = 9
+    let left_depth:Float = -9.5
+    let right_depth:Float = 9.5
     
     
     let worldHeight:Float = 30
-    let worldWidth:Float = 18
+    let worldWidth:Float = 19
     let worldDepth:Float = 3
-
 
     var gameView:SCNView!
     var gameScene:SCNScene!
@@ -41,23 +40,15 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         createSpikes()
         createRings()
         
-        let leftButton = UIButton(type: UIButtonType.custom)
-        leftButton.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        leftButton.setImage(UIImage(named: "button_test.png"), for: [])
-        leftButton.addTarget(self, action: #selector(leftButtonClicked), for: UIControlEvents.touchDown)
-        gameView.addSubview(leftButton)
+        createButtons()
         
     }
     
-    @objc func leftButtonClicked(){
-        print("Left button clicked")
-    }
     
-
     
     func initView() {
         gameView = self.view as! SCNView
-        gameView.allowsCameraControl = true
+        gameView.allowsCameraControl = false
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
     }
@@ -216,6 +207,67 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         boundingWall.materials.first?.diffuse.contents = UIColor.white
         
         return boundingWall
+    }
+    
+    func createButtons() {
+        
+        createLeftButton()
+        createRightButton()
+    }
+    
+    func createLeftButton() {
+        let leftButton = UIButton(type: UIButtonType.custom)
+        
+        let x_ButtonPosition:Float = 20
+        let y_ButtonPosition:Float = -20
+        
+        leftButton.setImage(UIImage(named: "button_test.png"), for: [])
+        leftButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        //        leftButton.frame = CGRect(x: x_ButtonPosition, y: y_ButtonPosition, width: 50, height: 50)
+        
+        leftButton.addTarget(self, action: #selector(leftButtonClicked), for: UIControlEvents.touchDown)
+        
+        gameView.addSubview(leftButton)
+        
+        //set constrains:
+        NSLayoutConstraint.activate([
+            leftButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: CGFloat(x_ButtonPosition)),
+            leftButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CGFloat(y_ButtonPosition)),
+            leftButton.widthAnchor.constraint(equalToConstant: 100),
+            leftButton.heightAnchor.constraint(equalToConstant: 100)
+            ])
+    }
+    
+    @objc func leftButtonClicked(){
+        print("Left button clicked")
+    }
+
+    func createRightButton() {
+        let rightButton = UIButton(type: UIButtonType.custom)
+        
+        let x_ButtonPosition:Float = -20
+        let y_ButtonPosition:Float = -20
+        
+        rightButton.setImage(UIImage(named: "button_test.png"), for: [])
+        rightButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        rightButton.addTarget(self, action: #selector(rightButtonClicked), for: UIControlEvents.touchDown)
+        
+        gameView.addSubview(rightButton)
+        
+        //set constrains:
+        NSLayoutConstraint.activate([
+            rightButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: CGFloat(x_ButtonPosition)),
+            rightButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CGFloat(y_ButtonPosition)),
+            rightButton.widthAnchor.constraint(equalToConstant: 100),
+            rightButton.heightAnchor.constraint(equalToConstant: 100)
+            ])
+    }
+    
+    @objc func rightButtonClicked(){
+        print("right button clicked")
     }
     
     func createRings() {
