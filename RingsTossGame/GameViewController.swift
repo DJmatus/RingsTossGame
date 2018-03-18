@@ -12,13 +12,6 @@ import SceneKit
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
-    //    TO DO: We might not need this since it can be calculated based on world(...) constants.
-    let bottom_height:Float = 0
-    let top_height:Float = 19
-    let left_depth:Float = -9.5
-    let right_depth:Float = 9.5
-    
-    
     let worldHeight:Float = 30
     let worldWidth:Float = 19
     let worldDepth:Float = 3
@@ -36,7 +29,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         initScene()
         initCamera()
         
-        createBounderies()
+        createBoundaries()
         createSpikes()
         createRings()
         
@@ -84,20 +77,23 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        return tan(Double(fieldofView.unsafelyUnwrapped)) * 30 * 2;
 //    }
     
-    func createBounderies() {
-        createTopBoundery()
-        createBottomBoundery()
-        createLeftBoundery()
-        createRightBoundery()
-        createFrontBoundery()
-        createBackBoundery()
+    func createBoundaries() {
         
-//        let box:Any = [createRightBoundery(), createLeftBoundery(), createTopBoundery(), createBottomBoundery(), createFrontBoundery(), createBackBoundery()]
+        let box: [SCNNode] = [createRightBoundary(), createLeftBoundary(), createTopBoundary(), createBottomBoundary(), createFrontBoundary(), createBackBoundary()]
         
+        for boundryNode in box {
+            gameScene.rootNode.addChildNode(boundryNode)
+            repositionNodeOnYAxis(geometryNode: boundryNode, repositionFactor: 2.5)
+            
+        }
         
     }
     
-    func createTopBoundery () {
+    func repositionNodeOnYAxis(geometryNode: SCNNode, repositionFactor:Float) {
+        geometryNode.position.y = geometryNode.position.y + repositionFactor;
+    }
+    
+    func createTopBoundary () -> SCNNode {
         let boundingWallTop:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldDepth))
 
         boundingWallTop.materials.first?.diffuse.contents = UIColor.white
@@ -110,13 +106,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:worldHeight/2 + 2.5, z:0)
-        
-        gameScene.rootNode.addChildNode(geometryNode)
+        geometryNode.position = SCNVector3(x:0, y:worldHeight/2, z:0)
+
+        return geometryNode
         
     }
     
-    func createBottomBoundery () {
+    func createBottomBoundary () -> SCNNode {
         let boundingWallBottom:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldDepth))
         
         boundingWallBottom.materials.first?.diffuse.contents = UIColor.white
@@ -128,13 +124,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:-worldHeight/2 + 2.5, z:0)
+        geometryNode.position = SCNVector3(x:0, y:-worldHeight/2, z:0)
         
-        gameScene.rootNode.addChildNode(geometryNode)
+        return geometryNode
         
     }
     
-    func createLeftBoundery () {
+    func createLeftBoundary () -> SCNNode {
         let boundingWallLeft:SCNGeometry = SCNPlane(width: CGFloat(worldDepth), height: CGFloat(worldHeight))
         
         boundingWallLeft.materials.first?.diffuse.contents = UIColor.white
@@ -146,13 +142,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:worldWidth/2, y:2.5, z:0)
+        geometryNode.position = SCNVector3(x:worldWidth/2, y:0, z:0)
         
-        gameScene.rootNode.addChildNode(geometryNode)
+        return geometryNode
         
     }
     
-    func createRightBoundery () {
+    func createRightBoundary () -> SCNNode {
         let boundingWallRight:SCNGeometry = SCNPlane(width: CGFloat(worldDepth), height: CGFloat(worldHeight))
         
         boundingWallRight.materials.first?.diffuse.contents = UIColor.white
@@ -164,13 +160,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:-worldWidth/2, y:2.5, z:0)
+        geometryNode.position = SCNVector3(x:-worldWidth/2, y:0, z:0)
         
-        gameScene.rootNode.addChildNode(geometryNode)
+       return geometryNode
         
     }
     
-    func createFrontBoundery() {
+    func createFrontBoundary() -> SCNNode {
         let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldHeight))
         
         boundingWallFront.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0)
@@ -182,12 +178,12 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
 //
 //        geometryNode.eulerAngles = transferToYZPlane
-        geometryNode.position = SCNVector3(x:0, y:2.5, z:worldDepth/2)
+        geometryNode.position = SCNVector3(x:0, y:0, z:worldDepth/2)
         
-        gameScene.rootNode.addChildNode(geometryNode)
+        return geometryNode
     }
     
-    func createBackBoundery() {
+    func createBackBoundary() -> SCNNode {
         
         let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldHeight))
         
@@ -201,9 +197,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         //
         //        geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:2.5, z:-worldDepth/2)
+        geometryNode.position = SCNVector3(x:0, y:0, z:-worldDepth/2)
         
-        gameScene.rootNode.addChildNode(geometryNode)
+        return geometryNode
         
     }
     
@@ -291,9 +287,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         gameScene.rootNode.addChildNode(geometryNode)
         
-//        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius))) - worldWidth/2 - ringRadius;
-
-        let randomPosition:Float = Float(arc4random_uniform(UInt32(right_depth - left_depth))) + left_depth;
+        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius))) - worldWidth/2 - ringRadius;
         
         geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
     
