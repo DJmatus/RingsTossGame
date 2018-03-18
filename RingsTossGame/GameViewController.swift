@@ -79,11 +79,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     func createBoundaries() {
         
-        let box: [SCNNode] = [createRightBoundary(), createLeftBoundary(), createTopBoundary(), createBottomBoundary(), createFrontBoundary(), createBackBoundary()]
+        let boundaryBox:BoundaryBox = BoundaryBox(boxHeight: worldHeight, boxWidth: worldWidth, boxDepth: worldDepth)
         
-        for boundryNode in box {
-            gameScene.rootNode.addChildNode(boundryNode)
-            repositionNodeOnYAxis(geometryNode: boundryNode, repositionFactor: 2.5)
+        let box: [SCNNode] = [boundaryBox.createRightBoundary(), boundaryBox.createLeftBoundary(), boundaryBox.createTopBoundary(), boundaryBox.createBottomBoundary(), boundaryBox.createFrontBoundary(), boundaryBox.createBackBoundary()]
+        
+        for boundaryNode in box {
+            gameScene.rootNode.addChildNode(boundaryNode)
+            repositionNodeOnYAxis(geometryNode: boundaryNode, repositionFactor: 2.5)
             
         }
         
@@ -93,115 +95,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         geometryNode.position.y = geometryNode.position.y + repositionFactor;
     }
     
-    func createTopBoundary () -> SCNNode {
-        let boundingWallTop:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldDepth))
-
-        boundingWallTop.materials.first?.diffuse.contents = UIColor.white
-        
-        let geometryNode = SCNNode(geometry:boundingWallTop)
-        
-        geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        
-        //rotation:
-        let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
-        geometryNode.eulerAngles = transferToYZPlane
-        
-        geometryNode.position = SCNVector3(x:0, y:worldHeight/2, z:0)
-
-        return geometryNode
-        
-    }
-    
-    func createBottomBoundary () -> SCNNode {
-        let boundingWallBottom:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldDepth))
-        
-        boundingWallBottom.materials.first?.diffuse.contents = UIColor.white
-        
-        let geometryNode = SCNNode(geometry:boundingWallBottom)
-        
-        geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        
-        let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
-        geometryNode.eulerAngles = transferToYZPlane
-        
-        geometryNode.position = SCNVector3(x:0, y:-worldHeight/2, z:0)
-        
-        return geometryNode
-        
-    }
-    
-    func createLeftBoundary () -> SCNNode {
-        let boundingWallLeft:SCNGeometry = SCNPlane(width: CGFloat(worldDepth), height: CGFloat(worldHeight))
-        
-        boundingWallLeft.materials.first?.diffuse.contents = UIColor.white
-        
-        let geometryNode = SCNNode(geometry:boundingWallLeft)
-        
-        geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        
-        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
-        geometryNode.eulerAngles = transferToYZPlane
-        
-        geometryNode.position = SCNVector3(x:worldWidth/2, y:0, z:0)
-        
-        return geometryNode
-        
-    }
-    
-    func createRightBoundary () -> SCNNode {
-        let boundingWallRight:SCNGeometry = SCNPlane(width: CGFloat(worldDepth), height: CGFloat(worldHeight))
-        
-        boundingWallRight.materials.first?.diffuse.contents = UIColor.white
-        
-        let geometryNode = SCNNode(geometry:boundingWallRight)
-        
-        geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        
-        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
-        geometryNode.eulerAngles = transferToYZPlane
-        
-        geometryNode.position = SCNVector3(x:-worldWidth/2, y:0, z:0)
-        
-       return geometryNode
-        
-    }
-    
-    func createFrontBoundary() -> SCNNode {
-        let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldHeight))
-        
-        boundingWallFront.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0)
-        
-        let geometryNode = SCNNode(geometry:boundingWallFront)
-        
-        geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-//
-//        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
-//
-//        geometryNode.eulerAngles = transferToYZPlane
-        geometryNode.position = SCNVector3(x:0, y:0, z:worldDepth/2)
-        
-        return geometryNode
-    }
-    
-    func createBackBoundary() -> SCNNode {
-        
-        let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(worldWidth), height: CGFloat(worldHeight))
-        
-        boundingWallFront.materials.first?.diffuse.contents = UIColor.white
-        
-        let geometryNode = SCNNode(geometry:boundingWallFront)
-        
-        geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        //
-        //        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
-        //
-        //        geometryNode.eulerAngles = transferToYZPlane
-        
-        geometryNode.position = SCNVector3(x:0, y:0, z:-worldDepth/2)
-        
-        return geometryNode
-        
-    }
     
     func createBoundingWallTemplate() -> SCNGeometry {
         let boundingWall: SCNGeometry = SCNPlane(width: 10, height: 10)

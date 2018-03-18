@@ -11,9 +11,9 @@ import SceneKit
 
 class BoundaryBox {
     
-    let boxHeight:Float = 30
-    let boxWidth:Float = 19
-    let boxDepth:Float = 3
+    let boxHeight:Float
+    let boxWidth:Float
+    let boxDepth:Float
     
     init (boxHeight: Float, boxWidth: Float, boxDepth: Float) {
         self.boxHeight = boxHeight
