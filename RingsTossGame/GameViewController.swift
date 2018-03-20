@@ -78,21 +78,25 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //    }
     
     func createBoundaries() {
-        
-        let boundaryBox:BoundaryBox = BoundaryBox(boxHeight: worldHeight, boxWidth: worldWidth, boxDepth: worldDepth)
-        
-        let box: [SCNNode] = [boundaryBox.createRightBoundary(), boundaryBox.createLeftBoundary(), boundaryBox.createTopBoundary(), boundaryBox.createBottomBoundary(), boundaryBox.createFrontBoundary(), boundaryBox.createBackBoundary()]
+        let boundaryBox: BoundaryBox = BoundaryBox(boxHeight: worldHeight, boxWidth: worldWidth, boxDepth: worldDepth)
+        let box: [SCNNode] = [
+            boundaryBox.createRightBoundary(),
+            boundaryBox.createLeftBoundary(),
+            boundaryBox.createTopBoundary(),
+            boundaryBox.createBottomBoundary(),
+            boundaryBox.createFrontBoundary(),
+            boundaryBox.createBackBoundary()
+        ]
         
         for boundaryNode in box {
             gameScene.rootNode.addChildNode(boundaryNode)
             repositionNodeOnYAxis(geometryNode: boundaryNode, repositionFactor: 2.5)
-            
+            print(boundaryNode.position)
         }
-        
     }
     
     func repositionNodeOnYAxis(geometryNode: SCNNode, repositionFactor:Float) {
-        geometryNode.position.y = geometryNode.position.y + repositionFactor;
+        geometryNode.position.y = geometryNode.position.y + repositionFactor
     }
     
     
@@ -103,10 +107,37 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return boundingWall
     }
     
+//    func createImpulseField (strength:Float) {
+//        let fieldUp = SCNPhysicsField.linearGravity()
+//        let fieldNode = SCNNode()
+//        fieldNode.physicsField = fieldUp
+//        fieldNode.physicsField?.strength = CGFloat(strength)
+//        gameScene.rootNode.addChildNode(fieldNode)
+//    }
+    
+    func createImpulseField (strength: CGFloat){
+        let fieldUp = SCNPhysicsField.spring()
+        let fieldNode = SCNNode()
+        fieldNode.physicsField = fieldUp
+        fieldNode.physicsField?.strength = CGFloat(strength)
+        fieldNode.position = SCNVector3(x: 8, y: 14, z: 0)
+        gameScene.rootNode.addChildNode(fieldNode)
+    }
+    
     func createButtons() {
         
         createLeftButton()
         createRightButton()
+    }
+    
+    @objc func leftButtonClicked(){
+        print("Left button clicked")
+        createImpulseField(strength: 0.5)
+    }
+    
+    @objc func rightButtonClicked(){
+        print("right button clicked")
+        createImpulseField(strength: 0.5)
     }
     
     func createLeftButton() {
@@ -134,10 +165,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             ])
     }
     
-    @objc func leftButtonClicked(){
-        print("Left button clicked")
-    }
-
     func createRightButton() {
         let rightButton = UIButton(type: UIButtonType.custom)
         
@@ -158,10 +185,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             rightButton.widthAnchor.constraint(equalToConstant: 100),
             rightButton.heightAnchor.constraint(equalToConstant: 100)
             ])
-    }
-    
-    @objc func rightButtonClicked(){
-        print("right button clicked")
     }
     
     func createRings() {

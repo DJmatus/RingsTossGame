@@ -45,14 +45,14 @@ class BoundaryBox {
         
         boundingWallBottom.materials.first?.diffuse.contents = UIColor.white
         
-        let geometryNode = SCNNode(geometry:boundingWallBottom)
+        let geometryNode = SCNNode(geometry: boundingWallBottom)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         
-        let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);
+        let transferToYZPlane = SCNVector3(.pi / 2.0, 0, 0);
         geometryNode.eulerAngles = transferToYZPlane
         
-        geometryNode.position = SCNVector3(x:0, y:-boxHeight/2, z:0)
+        geometryNode.position = SCNVector3(x: 0, y: -boxHeight / 2, z: 0)
         
         return geometryNode
         
