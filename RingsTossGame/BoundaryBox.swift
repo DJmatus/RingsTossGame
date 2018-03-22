@@ -18,12 +18,12 @@ class BoundaryBox {
     init (boxHeight: Float, boxWidth: Float, boxDepth: Float) {
         self.boxHeight = boxHeight
         self.boxWidth = boxWidth
-        self.boxDepth = boxDepth
+        self.boxDepth = boxDepth + 2
     }
     
     func createTopBoundary () -> SCNNode {
-        let boundingWallTop:SCNGeometry = SCNPlane(width: CGFloat(boxWidth), height: CGFloat(boxDepth))
-//        let boundingWallTop:SCNGeometry = SCNBox(width: CGFloat(boxWidth + 10), height: CGFloat(boxDepth + 10), length : 1, chamferRadius: 0)
+//        let boundingWallTop:SCNGeometry = SCNPlane(width: CGFloat(boxWidth), height: CGFloat(boxDepth))
+        let boundingWallTop:SCNGeometry = SCNBox(width: CGFloat(boxWidth + 10), height: CGFloat(boxDepth + 10), length : 1, chamferRadius: 0)
         
         boundingWallTop.materials.first?.diffuse.contents = UIColor.white
         
@@ -61,8 +61,8 @@ class BoundaryBox {
     }
     
     func createLeftBoundary () -> SCNNode {
-        let boundingWallLeft:SCNGeometry = SCNPlane(width: CGFloat(boxDepth), height: CGFloat(boxHeight))
-//        let boundingWallLeft:SCNGeometry = SCNBox(width: CGFloat(boxDepth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
+//        let boundingWallLeft:SCNGeometry = SCNPlane(width: CGFloat(boxDepth), height: CGFloat(boxHeight))
+        let boundingWallLeft:SCNGeometry = SCNBox(width: CGFloat(boxDepth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
         
         boundingWallLeft.materials.first?.diffuse.contents = UIColor.white
         
@@ -80,8 +80,8 @@ class BoundaryBox {
     }
     
     func createRightBoundary () -> SCNNode {
-        let boundingWallRight:SCNGeometry = SCNPlane(width: CGFloat(boxDepth), height: CGFloat(boxHeight))
-//        let boundingWallRight:SCNGeometry = SCNBox(width: CGFloat(boxDepth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
+//        let boundingWallRight:SCNGeometry = SCNPlane(width: CGFloat(boxDepth), height: CGFloat(boxHeight))
+        let boundingWallRight:SCNGeometry = SCNBox(width: CGFloat(boxDepth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
         
         boundingWallRight.materials.first?.diffuse.contents = UIColor.white
         
@@ -99,8 +99,8 @@ class BoundaryBox {
     }
     
     func createFrontBoundary() -> SCNNode {
-        let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(boxWidth), height: CGFloat(boxHeight))
-//        let boundingWallFront:SCNGeometry = SCNBox(width: CGFloat(boxWidth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
+//        let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(boxWidth), height: CGFloat(boxHeight))
+        let boundingWallFront:SCNGeometry = SCNBox(width: CGFloat(boxWidth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
         
         boundingWallFront.materials.first?.diffuse.contents = UIColor.white.withAlphaComponent(0)
         
@@ -118,8 +118,8 @@ class BoundaryBox {
     
     func createBackBoundary() -> SCNNode {
         
-        let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(boxWidth), height: CGFloat(boxHeight))
-//        let boundingWallFront:SCNGeometry = SCNBox(width: CGFloat(boxWidth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
+//        let boundingWallFront:SCNGeometry = SCNPlane(width: CGFloat(boxWidth), height: CGFloat(boxHeight))
+        let boundingWallFront:SCNGeometry = SCNBox(width: CGFloat(boxWidth + 10), height: CGFloat(boxHeight + 10), length : 1, chamferRadius: 0)
         
         boundingWallFront.materials.first?.diffuse.contents = UIColor.white
         

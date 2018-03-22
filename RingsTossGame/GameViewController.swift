@@ -107,17 +107,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return boundingWall
     }
     
-//    func createImpulseField (strength: CGFloat){
-//        let fieldUp = SCNPhysicsField.spring()
-//        let fieldNode = SCNNode()
-//        fieldNode.physicsField = fieldUp
-//        fieldNode.physicsField?.strength = CGFloat(strength)
-//        fieldNode.position = SCNVector3(x: 8, y: 14, z: 0)
-//        gameScene.rootNode.addChildNode(fieldNode)
-//    }
-    
-
-    
     func createButtons() {
         
         createLeftButton()
@@ -151,8 +140,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     @objc func leftButtonClicked(){
         print("Left button clicked")
+        for _ in 1...20 {
+            createBubble(position: SCNVector3(x: -worldWidth/2+3, y: -worldHeight/2 + 2.5, z: 0))
+        }
         let fieldOriginOffset = SCNVector3(x: -worldWidth/2+3, y: -worldHeight/2, z: 0)
-        let fieldNode:SCNNode = attachImpulseField(strength: 700, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
+        let fieldNode:SCNNode = attachImpulseField(strength: 800, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
         
         
         //Just to see the center
@@ -171,6 +163,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     @objc func rightButtonClicked(){
         print("right button clicked")
+        for _ in 1...20 {
+            createBubble(position: SCNVector3(x: worldWidth/2-3, y: -worldHeight/2 + 2.5, z: 0))
+        }
         let fieldOriginOffset = SCNVector3(x: worldWidth/2-3, y: -worldHeight/2, z: 0)
         
         
@@ -184,7 +179,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         
         
-        let fieldNode:SCNNode = attachImpulseField(strength: 700, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
+        let fieldNode:SCNNode = attachImpulseField(strength: 800, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             fieldNode.removeFromParentNode()
@@ -240,7 +235,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         gameScene.rootNode.addChildNode(geometryNode)
         
-        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius))) - worldWidth/2 - ringRadius;
+        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius) * 100) / 100) - worldWidth/2 - ringRadius;
         
         geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
         
@@ -251,6 +246,28 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
     }
     
+    func createBubble(position: SCNVector3) {
+        let bubblesRadius:Float = Float(arc4random_uniform(800)) / 1000
+        let geometry:SCNGeometry = SCNSphere(radius: CGFloat(bubblesRadius))
+        let geometryNode = SCNNode(geometry: geometry)
+        geometryNode.position = position
+        
+        geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        geometry.materials.first?.diffuse.contents = UIColor.yellow
+
+        
+        gameScene.rootNode.addChildNode(geometryNode)
+        
+//        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius))) - worldWidth/2 - ringRadius;
+        
+//        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
+        
+        let randomDirection:Float = arc4random_uniform(2) == 0 ? -1.0 : 1
+        
+        let force = SCNVector3(x:randomDirection, y:70, z:0)
+    
+        geometryNode.physicsBody?.applyForce(force, at: SCNVector3(x: 0.1, y: 0.4, z:0.05), asImpulse: true)
+    }
     
     func createSpikes() {
         let spikeGeometry:SCNGeometry = SCNCylinder(radius: 1.0, height: 4.0)
