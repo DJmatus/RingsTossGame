@@ -53,6 +53,7 @@ class BoundaryBox {
         let geometryNode = SCNNode(geometry: boundingWallBottom)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        geometryNode.categoryBitMask = 0b0000000000000000000000000000000000000000000000000000000000000001
         
         let transferToYZPlane = SCNVector3(.pi / 2.0, 0, 0);
         geometryNode.eulerAngles = transferToYZPlane
@@ -72,6 +73,7 @@ class BoundaryBox {
         let geometryNode = SCNNode(geometry:boundingWallLeft)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        geometryNode.categoryBitMask = 0b0000000000000000000000000000000000000000000000000000000000000001
         
         let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         geometryNode.eulerAngles = transferToYZPlane
@@ -91,6 +93,7 @@ class BoundaryBox {
         let geometryNode = SCNNode(geometry:boundingWallRight)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        geometryNode.categoryBitMask = 0b0000000000000000000000000000000000000000000000000000000000000001
         
         let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         geometryNode.eulerAngles = transferToYZPlane
@@ -110,6 +113,7 @@ class BoundaryBox {
         let geometryNode = SCNNode(geometry:boundingWallFront)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        geometryNode.categoryBitMask = 0b0000000000000000000000000000000000000000000000000000000000000001
         //
         //        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         //
@@ -129,6 +133,7 @@ class BoundaryBox {
         let geometryNode = SCNNode(geometry:boundingWallFront)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        geometryNode.categoryBitMask = 0b0000000000000000000000000000000000000000000000000000000000000001
         //
         //        let transferToYZPlane = SCNVector3(0, Float.pi/2, 0);
         //
