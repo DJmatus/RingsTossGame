@@ -30,6 +30,9 @@ class BoundaryBox {
         let geometryNode = SCNNode(geometry:boundingWallTop)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+//        geometryNode.physicsBody?.categoryBitMask = geometryNode.physicsBody!.categoryBitMask ^ 0b10
+        
+        geometryNode.categoryBitMask = 0b0000000000000000000000000000000000000000000000000000000000010000
         
         //rotation:
         let transferToYZPlane = SCNVector3(Float.pi/2, 0 , 0);

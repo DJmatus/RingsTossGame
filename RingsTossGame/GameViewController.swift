@@ -9,6 +9,7 @@
 import UIKit
 import QuartzCore
 import SceneKit
+//import SpriteKit
 
 class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
@@ -40,10 +41,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     
     func initView() {
+//        gameView = SCNView(frame: self.view.frame)
         gameView = self.view as! SCNView
         gameView.allowsCameraControl = false
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
+        
+//        self.view.addSubview(gameView)
     }
     
     func initScene() {
@@ -181,7 +185,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         let fieldNode:SCNNode = attachImpulseField(strength: 800, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             fieldNode.removeFromParentNode()
         }
     }
@@ -235,9 +239,14 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         gameScene.rootNode.addChildNode(geometryNode)
         
-        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius) * 100) / 100) - worldWidth/2 - ringRadius;
+        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius) * 100) / 100) - worldWidth / 2 - ringRadius;
         
         geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
+        print(geometryNode.position)
+        
+        geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000001000
+        geometryNode.physicsBody?.collisionBitMask =   0b0000000000000000000000000000000000000000000000000000000000011110
+        geometryNode.physicsBody?.contactTestBitMask = 0b0000000000000000000000000000000000000000000000000000000000000000
         
         let randomDirection:Float = arc4random_uniform(2) == 0 ? -1.0 : 1
         //        let force = SCNVector3(x:randomDirection, y:20, z:0)
@@ -251,31 +260,40 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let geometry:SCNGeometry = SCNSphere(radius: CGFloat(bubblesRadius))
         let geometryNode = SCNNode(geometry: geometry)
         geometryNode.position = position
-        
+
         geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         geometry.materials.first?.diffuse.contents = UIColor.yellow
 
-        
         gameScene.rootNode.addChildNode(geometryNode)
-        
+
 //        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius))) - worldWidth/2 - ringRadius;
-        
+
 //        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
-        
+
         let randomDirection:Float = arc4random_uniform(2) == 0 ? -1.0 : 1
-        
+
         let force = SCNVector3(x:randomDirection, y:70, z:0)
-    
+
         geometryNode.physicsBody?.applyForce(force, at: SCNVector3(x: 0.1, y: 0.4, z:0.05), asImpulse: true)
+        geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000000100
+        geometryNode.physicsBody?.collisionBitMask =   0b0000000000000000000000000000000000000000000000000000000000001100
+        geometryNode.physicsBody?.contactTestBitMask = 0b0000000000000000000000000000000000000000000000000000000000000000
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            geometryNode.removeFromParentNode()
+        }
     }
     
     func createSpikes() {
         let spikeGeometry:SCNGeometry = SCNCylinder(radius: 1.0, height: 4.0)
+        let geometryNode = SCNNode()
         
         spikeGeometry.materials.first?.diffuse.contents = UIColor.red
         
         let spikeGeometryNode = SCNNode(geometry: spikeGeometry)
         spikeGeometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        
+        geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000000010
         
         gameScene.rootNode.addChildNode(spikeGeometryNode)
     }
@@ -288,6 +306,19 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
 //        }
     }
     
+   
+    // new bounderies test
+    
+//    func didMove(to: SCNView) {
+//        // 1
+////        let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+//        let borderBody = SCNPhysicsBody(coder: CGRect(self.view.frame))
+//        // 2
+//        borderBody.friction = 0
+//        // 3
+//        self.physicsBody = borderBody
+//    }
+//
     override var shouldAutorotate: Bool {
         return true
     }
