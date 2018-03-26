@@ -13,6 +13,7 @@
 		B01D63B4205811F400134A60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B01D63B3205811F400134A60 /* Assets.xcassets */; };
 		B01D63B7205811F400134A60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B01D63B5205811F400134A60 /* LaunchScreen.storyboard */; };
 		B01D63BF205BE76E00134A60 /* GameGeometriesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01D63BE205BE76E00134A60 /* GameGeometriesFactory.swift */; };
+		B023D15920692CD400821BD4 /* Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B023D15820692CD400821BD4 /* Physics.swift */; };
 		B0A4334A205F180500354AB3 /* BoundaryBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A43349205F180500354AB3 /* BoundaryBox.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		B01D63B6205811F400134A60 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B01D63B8205811F400134A60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B01D63BE205BE76E00134A60 /* GameGeometriesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGeometriesFactory.swift; sourceTree = "<group>"; };
+		B023D15820692CD400821BD4 /* Physics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Physics.swift; sourceTree = "<group>"; };
 		B0A43349205F180500354AB3 /* BoundaryBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundaryBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,6 +62,7 @@
 			children = (
 				B01D63AA205811F400134A60 /* AppDelegate.swift */,
 				B01D63AE205811F400134A60 /* GameViewController.swift */,
+				B023D15820692CD400821BD4 /* Physics.swift */,
 				B0A43349205F180500354AB3 /* BoundaryBox.swift */,
 				B01D63BE205BE76E00134A60 /* GameGeometriesFactory.swift */,
 				B01D63B0205811F400134A60 /* Main.storyboard */,
@@ -144,6 +147,7 @@
 			files = (
 				B01D63AF205811F400134A60 /* GameViewController.swift in Sources */,
 				B01D63BF205BE76E00134A60 /* GameGeometriesFactory.swift in Sources */,
+				B023D15920692CD400821BD4 /* Physics.swift in Sources */,
 				B01D63AB205811F400134A60 /* AppDelegate.swift in Sources */,
 				B0A4334A205F180500354AB3 /* BoundaryBox.swift in Sources */,
 			);

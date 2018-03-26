@@ -237,8 +237,11 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     }
     
     func createRing() {
+        
+    // Rings design
+        
         let ringRadius:Float = 1.0
-        let geometry:SCNGeometry = SCNTorus(ringRadius: CGFloat(ringRadius), pipeRadius: 0.1)
+        let geometry: SCNGeometry = SCNTorus(ringRadius: CGFloat(ringRadius), pipeRadius: 0.1)
         let geometryNode = SCNNode(geometry: geometry)
         
         geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
@@ -247,12 +250,32 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         gameScene.rootNode.addChildNode(geometryNode)
         
-//        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius) * 100) / 100) - worldWidth / 2 - ringRadius;
-        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth / 2 - ringRadius + worldWidth / 2 + ringRadius))) - worldWidth / 2 + ringRadius;
-
+    // Empty space inside the ring
         
-        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
+        let ringInsideMaterial = SCNMaterial()
+//        ringInsideMaterial.diffuse.contents = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.0)
+        
+        let ringInside = SCNBox(width:2.0, height: 2.0, length: 0.2, chamferRadius: 0.0)
+        ringInside.materials = [ringInsideMaterial]
+        let contactSpace = SCNNode(geometry:ringInside)
+        contactSpace.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+        contactSpace.physicsBody?.categoryBitMask =     0b0000000000000000000000000000000000000000000000000000000000100000
+        contactSpace.physicsBody?.collisionBitMask =    0b0000000000000000000000000000000000000000000000000000000000000000
+        
+        gameScene.rootNode.addChildNode(contactSpace)
+        
+        
+    // Rings position after opening the app
+        
+//        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth / 2 - ringRadius + worldWidth / 2 + ringRadius))) - worldWidth / 2 + ringRadius;
+
+    // Position
+        
+//        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
+        geometryNode.position = SCNVector3(x:0, y:12, z:0)
         print(geometryNode.position)
+        
+    // Collision
         
         geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000001000
         geometryNode.physicsBody?.collisionBitMask =   0b0000000000000000000000000000000000000000000000000000000000011111
