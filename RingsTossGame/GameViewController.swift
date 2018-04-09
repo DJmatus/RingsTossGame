@@ -21,6 +21,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     var gameScene:SCNScene!
     var cameraNode:SCNNode!
     var targetCreationTime:TimeInterval = 0
+    let physics = Physics()
     
     let queue = DispatchQueue(label: "removeBubble")
     
@@ -44,13 +45,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     func initView() {
 //        gameView = SCNView(frame: self.view.frame)
         gameView = self.view as! SCNView
-        gameView.allowsCameraControl = false
+        gameView.allowsCameraControl = true
         gameView.autoenablesDefaultLighting = true
         gameView.delegate = self
-        gameView.showsStatistics = false
-        
-        
-//        self.view.addSubview(gameView)
+        gameView.showsStatistics = true
     }
     
     func initScene() {
@@ -69,21 +67,13 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         
         gameScene.rootNode.addChildNode(cameraNode)
         
-        
-//        print(cameraNode.camera?.zFar);
-//        print(cameraNode.camera?.zNear);
-//        cameraNode.camera?.fieldOfView;
-//        print(cameraNode.camera?.fieldOfView)
-//        print(cameraNode.camera?.xFov)
-//        print(cameraNode.camera?.yFov)
-//        print(getScreenHeight())
-        
     }
     
-//    func getScreenHeight() -> Double {
-//        let fieldofView = cameraNode.camera?.fieldOfView
-//        return tan(Double(fieldofView.unsafelyUnwrapped)) * 30 * 2;
-//    }
+    //Get random float between two integers
+    func getRandomFloat(floor: UInt32, ceiling: UInt32) -> Float {
+        return Float(arc4random_uniform((ceiling-floor) * 1000) + floor * 1000) / Float(1000)
+    }
+    
     
     func createDragField() {
         createField(strength: 0.5, offset: SCNVector3(x: 0, y: 0, z:0), fieldType: SCNPhysicsField.drag())
@@ -129,14 +119,10 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let leftButton = UIButton(type: UIButtonType.custom)
         
         let x_ButtonPosition:Float = 20
-        let y_ButtonPosition:Float = 0
+        let y_ButtonPosition:Float = -10
         
-        leftButton.setImage(UIImage(named: "button_test.png"), for: [])
+        leftButton.setImage(UIImage(named: "button.png"), for: [])
         leftButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        //        leftButton.frame = CGRect(x: x_ButtonPosition, y: y_ButtonPosition, width: 50, height: 50)
-        
         leftButton.addTarget(self, action: #selector(leftButtonClicked), for: UIControlEvents.touchDown)
         
         gameView.addSubview(leftButton)
@@ -146,7 +132,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             leftButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: CGFloat(x_ButtonPosition)),
             leftButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CGFloat(y_ButtonPosition)),
             leftButton.widthAnchor.constraint(equalToConstant: 100),
-            leftButton.heightAnchor.constraint(equalToConstant: 100)
+            leftButton.heightAnchor.constraint(equalToConstant: 82)
             ])
     }
     
@@ -157,15 +143,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
         let fieldOriginOffset = SCNVector3(x: -worldWidth/2+3, y: -worldHeight/2, z: 0)
         let fieldNode:SCNNode = createField(strength: 800, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
-        
-        
-        //Just to see the center
-//        let spikeGeometry:SCNGeometry = SCNSphere(radius: 0.1)
-//        spikeGeometry.materials.first?.diffuse.contents = UIColor.red
-//        let spikeGeometryNode = SCNNode(geometry: spikeGeometry)
-//        spikeGeometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-//        spikeGeometryNode.position = fieldOriginOffset
-//        gameScene.rootNode.addChildNode(spikeGeometryNode)
         
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -180,17 +157,6 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         }
         let fieldOriginOffset = SCNVector3(x: worldWidth/2-3, y: -worldHeight/2, z: 0)
         
-        
-        //Just to see the center
-//        let spikeGeometry:SCNGeometry = SCNSphere(radius: 0.1)
-//        spikeGeometry.materials.first?.diffuse.contents = UIColor.red
-//        let spikeGeometryNode = SCNNode(geometry: spikeGeometry)
-//        spikeGeometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-//        spikeGeometryNode.position = fieldOriginOffset
-//        gameScene.rootNode.addChildNode(spikeGeometryNode)
-        
-        
-        
         let fieldNode:SCNNode = createField(strength: 800, offset: fieldOriginOffset, fieldType: SCNPhysicsField.electric())
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -203,9 +169,9 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let rightButton = UIButton(type: UIButtonType.custom)
         
         let x_ButtonPosition:Float = -20
-        let y_ButtonPosition:Float = 0
+        let y_ButtonPosition:Float = -10
         
-        rightButton.setImage(UIImage(named: "button_test.png"), for: [])
+        rightButton.setImage(UIImage(named: "button.png"), for: [])
         rightButton.translatesAutoresizingMaskIntoConstraints = false
         
         rightButton.addTarget(self, action: #selector(rightButtonClicked), for: UIControlEvents.touchDown)
@@ -217,7 +183,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
             rightButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: CGFloat(x_ButtonPosition)),
             rightButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: CGFloat(y_ButtonPosition)),
             rightButton.widthAnchor.constraint(equalToConstant: 100),
-            rightButton.heightAnchor.constraint(equalToConstant: 100)
+            rightButton.heightAnchor.constraint(equalToConstant: 82)
             ])
     }
     
@@ -230,6 +196,43 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         return fieldNode
     }
     
+    //Polygon as compound node for physics shape of the ring
+    func ringCompoundShape (radius: CGFloat, pipeRadius: CGFloat, numOfVertices: Int) -> SCNNode {
+        // a node to hold the compound geometry
+        let parent = SCNNode()
+        
+        
+        let centerAngle: Float = Float.pi * 2 / Float(numOfVertices)
+        
+        // one node with a cyclinder edge
+        let edgeLength = CGFloat(tan(centerAngle / Float(2))) * radius * 2 + radius/5
+        let cylinder = SCNNode(geometry: SCNCylinder(radius: pipeRadius, height: edgeLength))
+        cylinder.geometry?.materials.first?.diffuse.contents = UIColor.yellow
+        
+        
+        // inner func to clone the cylinder to a specific position
+        func edge(x : CGFloat, y: CGFloat, z: CGFloat, rotation: SCNVector3) -> SCNNode {
+            let node = cylinder.clone()
+            node.position = SCNVector3(x: Float(x), y: Float(y), z: Float(z))
+            node.eulerAngles = rotation
+            return node
+        }
+        
+        
+        
+        
+        for i in 0...numOfVertices {
+            let centerDisplacementAngle = Double((Float(i)) * centerAngle)
+            let edgeRotation = -(Float(numOfVertices - 2) / Float(numOfVertices) * Float.pi * Float(i))
+            let rotateOnZ: SCNVector3 = SCNVector3(0, 0, edgeRotation)
+            
+            parent.addChildNode(edge(x:  radius * CGFloat(cos(centerDisplacementAngle)), y:  radius * CGFloat(sin(centerDisplacementAngle)), z: 0, rotation: rotateOnZ))
+        }
+        
+        parent.eulerAngles = SCNVector3(Float.pi/2 , 0 , 0)
+        return parent
+    }
+    
     func createRings() {
         for _ in 1...5 {
             createRing()
@@ -238,79 +241,57 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
     
     func createRing() {
         
-    // Rings design
-        
+        // Rings design
         let ringRadius:Float = 1.0
         let geometry: SCNGeometry = SCNTorus(ringRadius: CGFloat(ringRadius), pipeRadius: 0.1)
         let geometryNode = SCNNode(geometry: geometry)
         
-        geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        let nodeCompound = ringCompoundShape(radius: CGFloat(ringRadius), pipeRadius: 0.1, numOfVertices: 8)
+        let physicshape: SCNPhysicsShape = SCNPhysicsShape(node: nodeCompound , options: [SCNPhysicsShape.Option.keepAsCompound: true])
+        geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: physicshape)
+
         geometryNode.physicsBody?.charge = 1
         geometry.materials.first?.diffuse.contents = UIColor(red:1.00, green:0.35, blue:0.37, alpha:1.0)
-        
         gameScene.rootNode.addChildNode(geometryNode)
-        
-    // Empty space inside the ring
-        
-        let ringInsideMaterial = SCNMaterial()
-//        ringInsideMaterial.diffuse.contents = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.0)
-        
-        let ringInside = SCNBox(width:2.0, height: 2.0, length: 0.2, chamferRadius: 0.0)
-        ringInside.materials = [ringInsideMaterial]
-        let contactSpace = SCNNode(geometry:ringInside)
-        contactSpace.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
-        contactSpace.physicsBody?.categoryBitMask =     0b0000000000000000000000000000000000000000000000000000000000100000
-        contactSpace.physicsBody?.collisionBitMask =    0b0000000000000000000000000000000000000000000000000000000000000000
-        
-        gameScene.rootNode.addChildNode(contactSpace)
+        gameScene.rootNode.addChildNode(nodeCompound)
         
         
-    // Rings position after opening the app
+        // Collision
+        geometryNode.physicsBody?.categoryBitMask =    physics.ringCategoryMask
+        geometryNode.physicsBody?.collisionBitMask =   physics.ringCategoryMask | physics.spikeCategoryMask | physics.bubblesCategoryMask | physics.otherBoundariesCategoryMask | physics.topBoundaryCategoryMask
         
-//        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth / 2 - ringRadius + worldWidth / 2 + ringRadius))) - worldWidth / 2 + ringRadius;
-
-    // Position
         
-//        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
+        // Rings position after opening the app
+        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth / 2 - ringRadius + worldWidth / 2 + ringRadius))) - worldWidth / 2 + ringRadius;
         geometryNode.position = SCNVector3(x:0, y:12, z:0)
-        print(geometryNode.position)
-        
-    // Collision
-        
-        geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000001000
-        geometryNode.physicsBody?.collisionBitMask =   0b0000000000000000000000000000000000000000000000000000000000011111
-        geometryNode.physicsBody?.contactTestBitMask = 0b0000000000000000000000000000000000000000000000000000000000000000
-        
-        let randomDirection:Float = arc4random_uniform(2) == 0 ? -1.0 : 1
-        //        let force = SCNVector3(x:randomDirection, y:20, z:0)
-        //
-        //geometryNode.physicsBody?.applyForce(force, at: SCNVector3(x: 0.1, y: 0.4, z:0.05), asImpulse: true)
-        
+
+//        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
     }
     
+    
     func createBubble(position: SCNVector3) {
-        let bubblesRadius:Float = Float(arc4random_uniform(800)) / 1000
+        let bubblesRadius:Float = getRandomFloat(floor: 4, ceiling: 8) / 10
         let geometry:SCNGeometry = SCNSphere(radius: CGFloat(bubblesRadius))
         let geometryNode = SCNNode(geometry: geometry)
         geometryNode.position = position
 
         geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        geometry.materials.first?.diffuse.contents = UIColor.blue.withAlphaComponent(0.3)
+        geometry.materials.first?.diffuse.contents = UIImage(named:"bubble_2.png")
 
         gameScene.rootNode.addChildNode(geometryNode)
+
 
 //        let randomPosition:Float = Float(arc4random_uniform(UInt32(worldWidth - 2 * ringRadius))) - worldWidth/2 - ringRadius;
 
 //        geometryNode.position = SCNVector3(x:randomPosition, y:-8, z:0)
 
-        let randomDirection:Float = arc4random_uniform(2) == 0 ? -1.0 : 1
-
-        let force = SCNVector3(x:randomDirection, y:40, z:0)
-
+        let forceXDirection:Float = Float(arc4random_uniform(20)) - Float(10)
+        let force = SCNVector3(x:forceXDirection, y:40, z:0)
+        
+        // Collision
         geometryNode.physicsBody?.applyForce(force, at: SCNVector3(x: 0.1, y: 0.4, z:0.05), asImpulse: true)
-        geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000000100
-        geometryNode.physicsBody?.collisionBitMask =   0b0000000000000000000000000000000000000000000000000000000000001101
-        geometryNode.physicsBody?.contactTestBitMask = 0b0000000000000000000000000000000000000000000000000000000000000000
+        geometryNode.physicsBody?.categoryBitMask =    physics.bubblesCategoryMask
+        geometryNode.physicsBody?.collisionBitMask =   physics.otherBoundariesCategoryMask | physics.ringCategoryMask | physics.spikeCategoryMask | physics.bubblesCategoryMask
         queue.asyncAfter(deadline: .now() + 1) {
             geometryNode.removeFromParentNode()
         }
@@ -326,7 +307,7 @@ class GameViewController: UIViewController, SCNSceneRendererDelegate {
         let spikeGeometryNode = SCNNode(geometry: spikeGeometry)
         spikeGeometryNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         
-        geometryNode.physicsBody?.categoryBitMask =    0b0000000000000000000000000000000000000000000000000000000000000010
+        geometryNode.physicsBody?.categoryBitMask =    physics.spikeCategoryMask
         
         gameScene.rootNode.addChildNode(spikeGeometryNode)
     }
