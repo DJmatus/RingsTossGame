@@ -14,6 +14,7 @@
 		B01D63B7205811F400134A60 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B01D63B5205811F400134A60 /* LaunchScreen.storyboard */; };
 		B01D63BF205BE76E00134A60 /* GameGeometriesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B01D63BE205BE76E00134A60 /* GameGeometriesFactory.swift */; };
 		B023D15920692CD400821BD4 /* Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B023D15820692CD400821BD4 /* Physics.swift */; };
+		B04D0E86207B8C4D002A3FA7 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04D0E85207B8C4D002A3FA7 /* Buttons.swift */; };
 		B0A4334A205F180500354AB3 /* BoundaryBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A43349205F180500354AB3 /* BoundaryBox.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		B01D63B8205811F400134A60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B01D63BE205BE76E00134A60 /* GameGeometriesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameGeometriesFactory.swift; sourceTree = "<group>"; };
 		B023D15820692CD400821BD4 /* Physics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Physics.swift; sourceTree = "<group>"; };
+		B04D0E85207B8C4D002A3FA7 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		B0A43349205F180500354AB3 /* BoundaryBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundaryBox.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,6 +64,7 @@
 			children = (
 				B01D63AA205811F400134A60 /* AppDelegate.swift */,
 				B01D63AE205811F400134A60 /* GameViewController.swift */,
+				B04D0E85207B8C4D002A3FA7 /* Buttons.swift */,
 				B023D15820692CD400821BD4 /* Physics.swift */,
 				B0A43349205F180500354AB3 /* BoundaryBox.swift */,
 				B01D63BE205BE76E00134A60 /* GameGeometriesFactory.swift */,
@@ -146,6 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B01D63AF205811F400134A60 /* GameViewController.swift in Sources */,
+				B04D0E86207B8C4D002A3FA7 /* Buttons.swift in Sources */,
 				B01D63BF205BE76E00134A60 /* GameGeometriesFactory.swift in Sources */,
 				B023D15920692CD400821BD4 /* Physics.swift in Sources */,
 				B01D63AB205811F400134A60 /* AppDelegate.swift in Sources */,
